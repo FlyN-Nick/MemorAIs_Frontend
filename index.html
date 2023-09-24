@@ -119,11 +119,12 @@
         <div class="right-section">
             <div class="right-container">
                 <h2>MemorAIs your medication reminders!</h2>
-                <form action="https://7358-209-2-229-214.ngrok-free.app/analyze" method="POST" enctype="multipart/form-data">
+                <form action="https://9b1f-209-2-229-214.ngrok-free.app/analyze" method="POST" id="upload-form" enctype="multipart/form-data">
                     <label for="file">File</label>
-                    <input id="file" type="file" name="file"/>
-                    <button name="submit" type="submit">Upload</button>
+                    <input id="image-input" type="file" name="file"/>
+                    <button name="submit" type="submit" id="form-submit">Upload</button>
                 </form>
+                <a id="download-link" style="display: none;">Download ICS</a>
             </div>
         </div>
     </div>
@@ -154,6 +155,39 @@
         // })
         upload_button = document.getElementById('upload-file');
 
+        const uploadForm = document.getElementById('upload-form');
+        const imageInput = document.getElementById('image-input');
+        const downloadLink = document.getElementById('download-link');
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('file', imageInput.files[0]);
+
+            try {
+                const response = await fetch('https://9b1f-209-2-229-214.ngrok-free.app/analyze', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data) {
+                        downloadLink.href = "https://9b1f-209-2-229-214.ngrok-free.app/"+ data;
+                        // downloadLink.style.display = 'block';
+                        downloadLink.click()
+                    } else {
+                        alert('No ICS file received in the response.');
+                    }
+                } else {
+                    alert('Error uploading image.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('An error occurred while uploading the image.');
+            }
+        });
         // upload_button.addEventListener('click', function() {
         //     file = document.getElementById('file')
         // })
