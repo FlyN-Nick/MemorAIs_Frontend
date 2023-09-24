@@ -142,6 +142,7 @@
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
                 videoElement.srcObject = stream;
+                videoElement.style.transform = 'scaleX(-1)';
             });
         }
         takePic_button = document.getElementById('takePic_button');
