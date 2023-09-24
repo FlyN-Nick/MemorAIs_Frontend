@@ -32,6 +32,7 @@
             flex: 1;
             padding: 20px;
             box-sizing: border-box;
+            background-color: transparent;
         }
 
         .right-section {
@@ -42,13 +43,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        .left-section {
-            background-color: transparent;
-        }
-
-        .right-section {
             background-color: transparent;
         }
 
@@ -92,6 +86,7 @@
         .instruction-container p {
             text-align: left; 
         }
+
         .top-bar {
             background: transparent;
             display: flex;
@@ -99,6 +94,7 @@
             align-items: center;
             padding: 10px 20px;
         }
+
         #video {
             width: 100%;
             max-width: 400px;
@@ -133,18 +129,20 @@
     </div>
 
     <!-- Much of the following code learned from https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos
-    // and https://stackoverflow.com/questions/33975431/how-can-i-capture-an-image-via-the-users-webcam-using-getusermedia -->
+    //and https://stackoverflow.com/questions/33975431/how-can-i-capture-an-image-via-the-users-webcam-using-getusermedia -->
 
-    <video id="video" autoplay playsinline></video> <!-- Video -->
-    <button id="takePic_button">Take Photo</button> <!-- Photo capture -->
+    <video id="video" autoplay playsinline></video>
+    <button id="takePic_button">Take Photo</button>
     <img id="takePic_img" alt="Picture from Camera" style="display: none;">
+    <button id="download_button" style="display: none;">Download Photo</button> <!-- Download button -->
+
     <script>
         //Access camera
         videoElement = document.getElementById('video');
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                    videoElement.srcObject = stream;
-                });
+                videoElement.srcObject = stream;
+            });
         }
         takePic_button = document.getElementById('takePic_button');
         takePic_img = document.getElementById('takePic_img');
@@ -156,20 +154,15 @@
             canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
             takePic_img.src = canvas.toDataURL('image/png');
             takePic_img.style.display = 'block';
+            document.getElementById('download_button').style.display = 'block';
         });
 
-        //upload file from camera
-        file_inp = document.getElementById('file_inp');
-        file_inp.addEventListener('change', function(event) {
-            file = event.target.files[0];
-            if(file) {
-                reader = new FileReader();
-                reader.onload = function(e) {
-                    takePic_img.src = e.target.result;
-                    takePic_img.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
+        download_button = document.getElementById('download_button');
+        download_button.addEventListener('click', function() {
+            var downloadLink = document.createElement('a');
+            downloadLink.href = takePic_img.src;
+            downloadLink.download = 'image_captured.png';
+            downloadLink.click();
         });
     </script>
 </body>
