@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>memorAIs Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to left top, grey, black);
+            background-attachment: fixed;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .right-container {
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: white;
+
+        }
+
+        .left-section {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .right-section {
+            flex: 1;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section {
+            background-color: transparent;
+        }
+
+        .right-section {
+            background-color: transparent;
+        }
+
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #918ae8, #493ddb);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+        }
+		
+		.button:hover {
+            background: linear-gradient(45deg, #493ddb, #918ae8);
+        }
+
+        .instruction-container {
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            color: white;
+        }
+        .instruction-container h3 {
+            text-align: center; 
+        }
+
+        .instruction-container p {
+            text-align: left; 
+        }
+        .top-bar {
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        #video {
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <img src="memorAIs_white.png" alt="Logo" class="logo">
+    </div>
+    <div class="container">
+        <div class="left-section">
+            <div class="instruction-container">
+                <h3>How to use MemorAIs</h3>
+                <p>
+                    1. Take a picture of your medication dosing instructions <br>
+                    2. Upload the picture to MemorAIs<br>
+                    3. Get an iCal file file straight to your device! <br>
+                </p>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="right-container">
+                <h2>MemorAIs your medication reminders!</h2>
+                <form>
+                    <label for="file">File</label>
+                    <input id="file" type="file" />
+                    <button>Upload</button>
+                  </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Much of the following code learned from https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos
+    // and https://stackoverflow.com/questions/33975431/how-can-i-capture-an-image-via-the-users-webcam-using-getusermedia -->
+
+    <video id="video" autoplay playsinline></video> <!-- Video -->
+    <button id="takePic_button">Take Photo</button> <!-- Photo capture -->
+    <img id="takePic_img" alt="Picture from Camera" style="display: none;">
+    <script>
+        //Access camera
+        videoElement = document.getElementById('video');
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                    videoElement.srcObject = stream;
+                });
+        }
+        takePic_button = document.getElementById('takePic_button');
+        takePic_img = document.getElementById('takePic_img');
+        canvas = document.createElement('canvas');
+
+        takePic_button.addEventListener('click', function() {
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            takePic_img.src = canvas.toDataURL('image/png');
+            takePic_img.style.display = 'block';
+        });
+
+        //upload file from camera
+        file_inp = document.getElementById('file_inp');
+        file_inp.addEventListener('change', function(event) {
+            file = event.target.files[0];
+            if(file) {
+                reader = new FileReader();
+                reader.onload = function(e) {
+                    takePic_img.src = e.target.result;
+                    takePic_img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
