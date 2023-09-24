@@ -134,7 +134,6 @@
     <video id="video" autoplay playsinline></video>
     <button id="takePic_button">Take Photo</button>
     <img id="takePic_img" alt="Picture from Camera" style="display: none;">
-    <button id="download_button" style="display: none;">Download Photo</button> <!-- Download button -->
 
     <script>
         //Access camera
@@ -142,6 +141,7 @@
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
                 videoElement.srcObject = stream;
+                videoElement.style.transform = 'scaleX(-1)';
             });
         }
         takePic_button = document.getElementById('takePic_button');
