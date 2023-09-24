@@ -3,6 +3,75 @@
 <head>
     <title>memorAIs Home Page</title>
     <style>
+        .spcontainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+        background: #eee;
+        opacity: 0.5;
+        display: none;
+        
+        &:before {
+            content: "";
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .spinner-frame {
+            display: inline-block;
+            vertical-align: middle;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #fff;
+            padding: 10px;
+            
+            .spinner-bar {
+            background: #29d;
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 100% 0 0 0;
+            
+            -webkit-animation: spinny 2s linear infinite;
+            transform-origin: 100% 100%;
+            }
+            
+            .spinner-cover {
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            }
+        }
+        }
+
+        @-webkit-keyframes spinny {
+        0% {
+            transform: rotate(0deg);
+            background: #29d;
+        }
+        50% {
+            transform: rotate(180deg);
+            background: #00427c;
+        }
+        100% {
+            transform: rotate(360deg);
+            background: #29d;
+        }
+        }
+
+
         body {
             margin: 0;
             padding: 0;
@@ -102,6 +171,12 @@
     </style>
 </head>
 <body>
+    <div class="spcontainer" id="spinner"> <!--There's the container that centers it-->
+        <div class="spinner-frame"> <!--The background-->
+          <div class="spinner-cover"></div> <!--The foreground-->
+          <div class="spinner-bar"></div> <!--and the spinny thing-->
+        </div>
+      </div>
     <div class="top-bar">
         <img src="memorAIs_white.png" alt="Logo" class="logo">
     </div>
@@ -132,9 +207,9 @@
     <!-- Much of the following code learned from https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos
     //and https://stackoverflow.com/questions/33975431/how-can-i-capture-an-image-via-the-users-webcam-using-getusermedia -->
 
-    <video id="video" autoplay playsinline></video>
+    <!-- <video id="video" autoplay playsinline></video>
     <button id="takePic_button">Take Photo</button>
-    <img id="takePic_img" alt="Picture from Camera" style="display: none;">
+    <img id="takePic_img" alt="Picture from Camera" style="display: none;"> -->
 
     <script>
         //Access camera
@@ -161,7 +236,7 @@
 
         uploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
+            document.getElementById('spinner').style.display = 'block';
             const formData = new FormData();
             formData.append('file', imageInput.files[0]);
 
@@ -174,11 +249,13 @@
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
-                        downloadLink.href = "https://9b1f-209-2-229-214.ngrok-free.app/"+ data;
+                        downloadLink.href = "https://9b1f-209-2-229-214.ngrok-free.app/"+ data+"?ngrok-skip-browser-warning=69420";
                         // downloadLink.style.display = 'block';
                         downloadLink.click()
+                        document.getElementById('spinner').style.display = 'none';
                     } else {
                         alert('No ICS file received in the response.');
+                        document.getElementById('spinner').style.display = 'none';
                     }
                 } else {
                     alert('Error uploading image.');
@@ -231,6 +308,7 @@
         //     console.error('failed due to network error or cross domain')
         //     })
         // });
+        
     </script>
 </body>
 </html>
