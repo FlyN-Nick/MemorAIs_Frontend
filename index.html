@@ -119,11 +119,11 @@
         <div class="right-section">
             <div class="right-container">
                 <h2>MemorAIs your medication reminders!</h2>
-                <form>
+                <form action="http://your-server-address:your-port/upload" method="POST" enctype="multipart/form-data">
                     <label for="file">File</label>
-                    <input id="file" type="file" />
-                    <button>Upload</button>
-                  </form>
+                    <input id="file" type="file" name="fileToUpload">
+                    <input type="submit" value="Upload File">
+                </form>                
             </div>
         </div>
     </div>
@@ -134,7 +134,6 @@
     <video id="video" autoplay playsinline></video>
     <button id="takePic_button">Take Photo</button>
     <img id="takePic_img" alt="Picture from Camera" style="display: none;">
-    <button id="download_button" style="display: none;">Download Photo</button> <!-- Download button -->
 
     <script>
         //Access camera
@@ -156,14 +155,6 @@
             takePic_img.src = canvas.toDataURL('image/png');
             takePic_img.style.display = 'block';
             document.getElementById('download_button').style.display = 'block';
-        });
-
-        download_button = document.getElementById('download_button');
-        download_button.addEventListener('click', function() {
-            var downloadLink = document.createElement('a');
-            downloadLink.href = takePic_img.src;
-            downloadLink.download = 'image_captured.png';
-            downloadLink.click();
         });
     </script>
 </body>
