@@ -187,7 +187,7 @@
                 <p>
                     1. Take a picture of your medication dosing instructions <br>
                     2. Upload the picture to MemorAIs<br>
-                    3. Get an iCal file file straight to your device! <br>
+                    3. Get an iCal file straight to your device! <br>
                 </p>
             </div>
         </div>
@@ -213,13 +213,13 @@
 
     <script>
         //Access camera
-        videoElement = document.getElementById('video');
-        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                videoElement.srcObject = stream;
-                videoElement.style.transform = 'scaleX(-1)';
-            });
-        }
+        // videoElement = document.getElementById('video');
+        // if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        //     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+        //         videoElement.srcObject = stream;
+        //         videoElement.style.transform = 'scaleX(-1)';
+        //     });
+        // }
         takePic_button = document.getElementById('takePic_button');
         takePic_img = document.getElementById('takePic_img');
         canvas = document.createElement('canvas');
@@ -241,7 +241,7 @@
             formData.append('file', imageInput.files[0]);
 
             try {
-                const response = await fetch('https://9b1f-209-2-229-214.ngrok-free.app/analyze', {
+                const response = await fetch('https://e472-209-2-229-214.ngrok-free.app/analyze', {
                     method: 'POST',
                     body: formData,
                 });
@@ -249,7 +249,7 @@
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
-                        downloadLink.href = "https://9b1f-209-2-229-214.ngrok-free.app/"+ data+"?ngrok-skip-browser-warning=69420";
+                        downloadLink.href = "https://e472-209-2-229-214.ngrok-free.app/"+ data+"?ngrok-skip-browser-warning=69420";
                         // downloadLink.style.display = 'block';
                         downloadLink.click()
                         document.getElementById('spinner').style.display = 'none';
