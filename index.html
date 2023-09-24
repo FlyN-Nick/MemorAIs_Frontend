@@ -119,11 +119,11 @@
         <div class="right-section">
             <div class="right-container">
                 <h2>MemorAIs your medication reminders!</h2>
-                <form>
+                <form action="https://7358-209-2-229-214.ngrok-free.app/analyze" method="POST" enctype="multipart/form-data">
                     <label for="file">File</label>
-                    <input id="file" type="file" />
-                    <button>Upload</button>
-                  </form>
+                    <input id="file" type="file" name="file"/>
+                    <button name="submit" type="submit">Upload</button>
+                </form>
             </div>
         </div>
     </div>
@@ -148,22 +148,55 @@
         takePic_img = document.getElementById('takePic_img');
         canvas = document.createElement('canvas');
 
+        // form = document.getElementById('boom')
+        // form.submit(function (e) {
+        //     e.preventDefault();
+        // })
+        upload_button = document.getElementById('upload-file');
+
+        // upload_button.addEventListener('click', function() {
+        //     file = document.getElementById('file')
+        // })
+
         takePic_button.addEventListener('click', function() {
             canvas.width = videoElement.videoWidth;
             canvas.height = videoElement.videoHeight;
             canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
             takePic_img.src = canvas.toDataURL('image/png');
             takePic_img.style.display = 'block';
+            console.log(takePic_img);
             document.getElementById('download_button').style.display = 'block';
         });
 
         download_button = document.getElementById('download_button');
-        download_button.addEventListener('click', function() {
-            var downloadLink = document.createElement('a');
-            downloadLink.href = takePic_img.src;
-            downloadLink.download = 'image_captured.png';
-            downloadLink.click();
-        });
+        // upload_button.addEventListener('click', function() {
+        //     file = document.getElementById('file')
+        //     // print('FFF', file)
+        //     // ____
+        //     var downloadLink = document.createElement('a');
+        //     var fd = new FormData();
+        //     fd.append('image', file /*, optional filename */)
+        //     var req = fetch('https://7358-209-2-229-214.ngrok-free.app/analyze', {
+        //         method: 'post',
+        //         body: fd /* or aFile[0]*/
+        //     }); // returns a promise
+
+        //     req.then(function(response) {
+        //     // returns status + response headers
+        //     // but not yet the body, 
+        //     // for that call `response[text() || json() || arrayBuffer()]` <-- also promise
+        //         if (res.ok) {
+        //             // status code was 200-299
+        //             downloadLink.href = 'https://7358-209-2-229-214.ngrok-free.app/test';
+        //             downloadLink.download = 'new_calendar.ics';
+        //             downloadLink.click();
+        //         } else {
+        //             // status was something else
+        //         }
+        //     }, function(error) {
+        //     console.error('failed due to network error or cross domain')
+        //     })
+        // });
     </script>
 </body>
 </html>
